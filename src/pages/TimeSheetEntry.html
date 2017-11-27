@@ -1,0 +1,64 @@
+<form id="timesheet">
+  <div id="error_message" class="center">
+  </div>
+  <fieldset style="height: 33.3rem;">
+    <datalist id="list_projects">
+    </datalist>
+    <datalist id="list_employees">
+    </datalist>
+    <datalist id="list_tasks">
+    </datalist>
+    <table>
+      <thead>
+        <th>Create Timesheet</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+    <div class="row">
+      <div class="col s12 m6">
+        <div class="input-field col s12">
+        <div class="input-field col s12">
+          <input id="employee_name" type="text" name="employee_name" class="validate" list="list_employees" title="Select the employee name." autofocus required>
+          <label for="employee_name">Employee Name</label>
+          <span class="error" style="height: inherit;">Field is required</span>
+        </div>
+          <input id="project_name" type="text" name="project_name" class="validate" list="list_projects" title="Select the prject name." autofocus required>
+          <label for="project_name">Prject Name</label>
+          <span class="error" style="height: inherit;">Field is required</span>
+        </div>
+        <div class="input-field col s12">
+          <input id="task_name" type="text" name="task_name" class="validate" title="Enter the task name." autofocus required>
+          <label for="task_name">Task Name</label>
+          <span class="error" style="height: inherit;">Field is required</span>
+        </div>
+        </div>
+      <div class="col s12 m6">
+      <div class="input-field col s12">
+          <input id="end_date" type="text" name="end_date" class="form-control">
+          <label for="end_date">Enter date(e.g:yyyy-mm-dd)</label>
+        </div>
+        <div class="input-field col s12">
+          <input id="effort" type="number" name="effort" step="any" class="validate" title="Enter the planned effort." autofocus required>
+          <label for="price">Actual Effort in Hrs</label>
+          <span class="error" style="height: inherit;">Not a number</span>
+        </div>
+        <div class="input-field col s12">
+          <input id="activity" type="text" name="activity" class="validate" title="Enter the Activity name." autofocus required>
+          <label for="activity">Activity Name</label>
+          <span class="error" style="height: inherit;">Field is required</span>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="fixed-action-btn" id="btnTimesheetSave">
+    <button type="submit" class="btn-floating btn-large waves-effect waves-light red"> <i class="material-icons">check</i></button>
+  </div>
+</form>
+
+
+
+<!-- <script src="js/datepicker.js" type="text/javascript"></script> -->
+<!-- <script src="js/main.js" type="text/javascript"></script> -->
+<script src="js/timesheet.js" type="text/javascript"></script>
+<!-- <script src="js/autocomplete.js" type="text/javascript"></script> -->

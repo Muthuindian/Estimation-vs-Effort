@@ -23,6 +23,7 @@
     "browser-sync": "^2.14.0",
     "npm-run-all": "^3.0.0",
     "uglify-js": "^2.7.3",
+    "materialize-css": "^0.97.8",
     "bootstrap-sass": "^3.3.7",
     "font-awesome": "^4.6.3",
     "jquery": "^2.2.0",
