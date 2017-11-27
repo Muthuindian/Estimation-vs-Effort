@@ -1,12 +1,14 @@
 <form id="task">
   <div id="error_message" class="center">
   </div>
-  <fieldset style="height: 33.3rem;">
+  <fieldset style="height: 33.3rem;border-style: none">
     <datalist id="list_projects">
     </datalist>
+    <datalist id="list_status">
+    </datalist>
     <table>
-      <thead>
-        <th>Create Tasks</th>
+      <thead style="border-width: none;background-color: #ee6e73;">
+        <th style="color: white;">Create Tasks</th>
       </thead>
       <tbody>
       </tbody>
@@ -14,33 +16,29 @@
     <div class="row">
       <div class="col s12 m6">
         <div class="input-field col s12">
-          <input id="project_name" type="text" name="project_name" class="validate" list="list_projects">
-          <label for="project_name">Prject Name</label>
-          <span class="error" style="height: inherit;">Field is required</span>
+          <input id="project_name" type="text" style="margin-bottom: 0rem;" name="project_name" class="validate" list="list_projects">
+          <label for="project_name">Project Name</label>
         </div>
         <div class="input-field col s12">
-          <input id="task_name" type="text" name="task_name" class="validate" title="Enter the task name." autofocus required>
+          <input id="task_name" type="text" name="task_name" style="margin-bottom: 0rem;" class="validate" title="Enter the task name." autofocus required>
           <label for="task_name">Task Name</label>
-          <span class="error" style="height: inherit;">Field is required</span>
         </div>
         <div class="input-field col s12">
-          <input id="start_date" type="text" name="start_date" class="form-control">
+          <input id="start_date" type="text" name="start_date" style="margin-bottom: 0rem;" class="form-control">
           <label for="start_date">Enter Start date(e.g:yyyy-mm-dd)</label>
         </div>
         </div>
       <div class="col s12 m6">
       <div class="input-field col s12">
-          <input id="end_date" type="text" name="end_date" class="form-control">
+          <input id="end_date" type="text" name="end_date" style="margin-bottom: 0rem;" class="form-control">
           <label for="end_date">Enter End date(e.g:yyyy-mm-dd)</label>
         </div>
         <div class="input-field col s12">
-          <input id="effort" type="number" name="effort" step="any" class="validate" title="Enter the planned effort." autofocus required>
+          <input id="effort" type="number" name="effort" style="margin-bottom: 0rem;" step="any" class="validate" title="Enter the planned effort." autofocus required>
           <label for="price">Planned Effort in Hrs</label>
-          <span class="error" style="height: inherit;">Not a number</span>
         </div>
-        <div class="input-field col s12">
-          <select id="status" class="browser-default validate">
-         </select>
+        <div class="input-field col s12" id="status_text">
+          <input id="status" type="text" style="margin-bottom: 0rem;" name="status" class="validate" list="list_status">
           <label for="status">Status</label>
         </div>
       </div>

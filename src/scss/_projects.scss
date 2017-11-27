@@ -22,26 +22,13 @@
 
     padding: 0;
 
+    tr {
+       th {
+           
+       }
+    }
+
   }
-}
-
-
-#search_bar {
-  border-radius: 2rem;
-  background-color: #FFFFFF;
-  padding: 0;
-  margin: 4px -47rem;
-  height: 2.5rem;
-}
-
-.headline1 {
-  margin-left: 6%;
-  color: black;
-  font-weight: bold;
-}
-
-.selected {
-  background-color: red;
 }
 
 a#btnPrjectSave {

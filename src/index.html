@@ -8,17 +8,18 @@
 
   <!-- CSS  -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+   <!--  <link rel="stylesheet" type="text/css" href="./css/main.css"> -->
 
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
-<body>
+<body onload="listProjects();">
 
   <nav>
     <div class="nav-wrapper">
       <img src="./images/logo.png" class="brand-logo left" style="margin-top: 0.7rem;margin-left: 0.7rem;"></img>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="left hide-on-med-and-down" style="margin-left: 5rem;">
         <li id="project" class="active"><a href="#" id="projects">Projects</a></li>
         <li id="task"><a href="#" id="tasks">Tasks</a></li>
         <li id="assignment"><a href="#" id="assignments">Assignments</a></li>
@@ -29,34 +30,42 @@
 
   <main style="margin-top:7rem;">
       <section id="section" class="col s12" style="width:85%;margin:auto;">
-      <div id="list_routes">
-  <div id="project_list">
-    <fieldset id="route_management_list" style="height: 33.3rem;">
-      <table id="tblList">
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th class="center">Project Name</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-      <empty></empty>
-    </fieldset>
-    <div class="fixed-action-btn">
-      <a class="btn-floating btn-large red add_projects" id="create_project_btn"><i class="material-icons">add</i> </a>
-    </div>
-  </div>
-</div>
       </section>
     </main>
 
-
-
-
   <!--  Scripts-->
+  <script>
+function listProjects() {
+
+  $('section').html('');
+    $('section').load('./pages/listProjects.html' , function(){
+
+      $.ajax({
+        type: "GET",
+        url: "http://localhost:8888/api/timeSheet/project",
+        dataType: "json",
+        success: function(response, status) {
+          let data = response;
+          projects = data;
+          if (data.length > 0) {
+            $("#tblList tbody").html("");
+            for (var i in data) {
+              var no = parseInt(i) + 1;
+              $("#tblList tbody").append("<tr id=" + data[i].project_id + ">" +
+                "<td style='text-align:center;'>" + no + " </td><td> " + data[i].name + "</td>" +
+                "<td  name='" + data[i].name + "' id='" + data[i].project_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_editproject' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteproject' style='padding-right:1rem;'>delete</i></td>" +
+                "</tr>");
+            }
+          } else {
+            $("#search_devision_list empty").html('')
+            $("#search_devision_list empty").append('<div style="padding:4rem;">Please <a id="create_devision_btn">Click Here </a> to create a new Divisions.</div>');
+          }
+        }
+      });
+    });
+    
+}
+</script>
    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
    <script src="js/jquery.cookie.js" type="text/javascript"></script>
    <script type="text/javascript" src="js/materialize.min.js"></script>

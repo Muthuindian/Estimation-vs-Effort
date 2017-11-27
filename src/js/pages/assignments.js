@@ -2,8 +2,8 @@ $(document).ready(function() {
 
     var base_url = "http://localhost:8888/api/timeSheet/task_assignment";
     var base_project_url = "http://localhost:8888/api/timeSheet/project";
-    var base_employee_url = "http://localhost:8888/api/employee";
-    var base_task_url = "http://localhost:8888/api/timeSheet/task";
+    var base_employee_url = "http://localhost:8888/api/seedData/employee";
+    var base_task_url = "http://localhost:8888/api/filterData/project_tasks_list";
     var assignments;
     var assignment_id;
     var task_id;
@@ -37,24 +37,60 @@ $(document).ready(function() {
                 $opt.val(data[i].name).text();
                 $opt.appendTo('#list_projects');
             }
+            if($.cookie("isEdit" , true)) {
+                getTasks(project_id);
+        }
+        calback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
-        await $.ajax({
+    }
+
+    $('#project_text').change(function(e) {
+
+        $('#list_tasks').html('');
+
+    e.stopImmediatePropagation();
+    e.preventDefault();
+    project_id = ($("#list_projects option[value='" + $('#project_text').val() + "']").attr('id'));
+    getTasks(project_id)
+
+})
+
+
+    function getTasks(project_id) {
+
+        let data = {
+            "where": {
+                "project_id": parseInt(project_id)
+            }
+        }
+
+        console.log("id" , project_id);
+        console.log("dATA" , data);
+
+        $.ajax({
             url: base_task_url,
-            method: "GET",
-            dataType: "json"
+            method: "POST",
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json"
         }).done(function(response) {
             let data = response;
             for (var i in data) {
-                var $opt = $('<option id=' + data[i].task_id + '>');
-                $opt.val(data[i].task).text();
-                $opt.appendTo('#list_tasks');
+                if(data[i].status_id == 1) {
+                    var $opt = $('<option id=' + data[i].task_id + '>');
+                    $opt.val(data[i].task).text();
+                    $opt.appendTo('#list_tasks');
+                }
+                
             }
             calback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
+
+
     }
 
 
@@ -70,8 +106,11 @@ $(document).ready(function() {
 
 
     $(document).on('click', '#create_assignment_btn', function(e) {
+
+
         e.preventDefault();
         e.stopImmediatePropagation();
+        $.cookie("isEdit", false);
         $('section').html('');
         $('section').load('./pages/addAssignments.html', function() {
             $("#employee").focus();
@@ -117,10 +156,11 @@ $(document).ready(function() {
                 $('section').html('');
                 $('section').load('./pages/addAssignments.html', function() {
                     let data = response;
+                    project_id = data.project_id;
                     let callback = function() {
                         $("#employee").val(data.employee.name).focus();
-                        $("#project").val(data.project.name).focus();
-                        $("#task").val(data.task.task).focus();
+                        $("#project_text").val(data.project.name).focus();
+                        $("#task_text").val(data.task.task).focus();
                     };
                     $("label").addClass('active');
                     render(callback);
@@ -141,8 +181,6 @@ $(document).ready(function() {
         }).done(function(data, status) {
             list();
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            $('#devision #error_message').html('');
-            $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
         });
     };
 
@@ -150,8 +188,8 @@ $(document).ready(function() {
     function post() {
 
         employee_id = ($("#list_employees option[value='" + $('#employee').val() + "']").attr('id'));
-        project_id = ($("#list_projects option[value='" + $('#project').val() + "']").attr('id'));
-        task_id = ($("#list_tasks option[value='" + $('#task').val() + "']").attr('id'));
+        project_id = ($("#list_projects option[value='" + $('#project_text').val() + "']").attr('id'));
+        task_id = ($("#list_tasks option[value='" + $('#task_text').val() + "']").attr('id'));
         console.log("emp", employee_id);
         console.log("proj", project_id);
         console.log("task", task_id);
@@ -170,8 +208,7 @@ $(document).ready(function() {
         }).done(function(data, status) {
             list();
         }).fail(function(jqXHR, textStatus, errorThrown) {
-            $('#devision #error_message').html('');
-            $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
+            
         });
     };
 
@@ -179,8 +216,8 @@ $(document).ready(function() {
     function put() {
 
         employee_id = ($("#list_employees option[value='" + $('#employee').val() + "']").attr('id'));
-        project_id = ($("#list_projects option[value='" + $('#project').val() + "']").attr('id'));
-        task_id = ($("#list_tasks option[value='" + $('#task').val() + "']").attr('id'));
+        project_id = ($("#list_projects option[value='" + $('#project_text').val() + "']").attr('id'));
+        task_id = ($("#list_tasks option[value='" + $('#task_text').val() + "']").attr('id'));
         var data = {
 
             employee_id: employee_id,
@@ -198,8 +235,6 @@ $(document).ready(function() {
                 list();
             },
             error: function(jqXHR, textStatus, errorThrown) {
-                $('#devision #error_message').html('');
-                $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
             }
         });
     };
@@ -229,15 +264,14 @@ $(document).ready(function() {
                         for (var i in data) {
                             var no = parseInt(i) + 1;
                             $("#tblassignList tbody").append("<tr id=" + data[i].task_assignment_id + ">" +
-                                "<td>" + no + " </td><td style='text-align:center;'> " + data[i].employee.name + "</td>" +
-                                "<td style='text-align:center;'> " + data[i].project.name + "</td>" +
-                                "<td style='text-align:center;'> " + data[i].task.task + "</td>" +
-                                "<td  name='" + data[i].employee.name + "' id='" + data[i].task_assignment_id + "' style='text-align:left;' class=''><i  class='material-icons btn_editassignment' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteassignment' style='padding-right:1rem;'>delete</i></td>" +
+                                "<td style='text-align:center;'>" + no + " </td><td> " + data[i].employee.name + "</td>" +
+                                "<td> " + data[i].project.name + "</td>" +
+                                "<td> " + data[i].task.task + "</td>" +
+                                "<td  name='" + data[i].employee.name + "' id='" + data[i].task_assignment_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_editassignment' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteassignment' style='padding-right:1rem;'>delete</i></td>" +
                                 "</tr>");
                         }
                     } else {
-                        $("#search_devision_list empty").html('')
-                        $("#search_devision_list empty").append('<div style="padding:4rem;">Please <a id="create_devision_btn">Click Here </a> to create a new Divisions.</div>');
+                        
                     }
                 }
             });

@@ -2,9 +2,11 @@ $(document).ready(function() {
 
   var base_url = "http://localhost:8888/api/timeSheet/task";
   var base_project_url = "http://localhost:8888/api/timeSheet/project" ;
+  var base_status_url = "http://localhost:8888/api/seedData/status";
   var tasks;
   var task_id;
   var project_id;
+  var status_id;
 
 
 
@@ -19,6 +21,24 @@ $(document).ready(function() {
             var $opt = $('<option id=' + data[i].project_id + '>');
             $opt.val(data[i].name).text();
             $opt.appendTo('#list_projects');
+        }
+          status();
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      });
+    };
+
+    function status() {
+      $.ajax({
+        url: base_status_url,
+        method: "GET",
+        dataType: "json"
+      }).done(function(response) {
+        let data = response;
+        for (var i in data) {
+            var $opt = $('<option id=' + data[i].status_id + '>');
+            $opt.val(data[i].name).text();
+            $opt.appendTo('#list_status');
         }
       }).fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown);
@@ -42,6 +62,7 @@ $(document).on('click' , '#tasks' , function(e) {
 $(document).on('click', '#create_task_btn', function(e) {
     e.preventDefault();
     e.stopImmediatePropagation();
+    $.cookie("isEdit" , false);
     $('section').html('');
     $('section').load('./pages/addTasks.html', function() {
       $("#project_name").focus();
@@ -90,6 +111,8 @@ $(document).on('click', '.btn_edittask', function(e) {
             $("#start_date").val(data.start_date).focus();
             $("#end_date").val(data.end_date).focus();
             $("#effort").val(data.plan_effort).focus();
+            $("#status").val(data.status.name).focus();
+
             $("label").addClass('active');
             project();
           });
@@ -109,8 +132,6 @@ function deleteTask(task_id) {
     }).done(function(data, status) {
       list();
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      $('#devision #error_message').html('');
-      $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
     });
   };
 
@@ -118,12 +139,14 @@ function deleteTask(task_id) {
 function post() {
 
   project_id = ($("#list_projects option[value='" + $('#project_name').val() + "']").attr('id'));
+  status_id = ($("#list_status option[value='" + $('#status').val() + "']").attr('id'));
     var data = {
       project_id: project_id,
       task: $("#task_name").val().trim(),
       start_date: $("#start_date").val().trim(),
       end_date: $("#end_date").val().trim(),
-      plan_effort: $("#effort").val().trim()
+      plan_effort: $("#effort").val().trim(),
+      status_id: status_id
     };
     $.ajax({
       method: "POST",
@@ -134,8 +157,6 @@ function post() {
     }).done(function(data, status) {
       list();
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      $('#devision #error_message').html('');
-      $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
     });
   };
 
@@ -143,12 +164,14 @@ function post() {
   function put() {
    
     project_id = ($("#list_projects option[value='" + $('#project_name').val() + "']").attr('id'));
+    status_id = ($("#list_status option[value='" + $('#status').val() + "']").attr('id'));
     var data = {
       project_id: project_id,
       task: $("#task_name").val().trim(),
       start_date: $("#start_date").val().trim(),
       end_date: $("#end_date").val().trim(),
-      plan_effort: $("#effort").val().trim()
+      plan_effort: $("#effort").val().trim(),
+      status_id: status_id
     };
 
     $.ajax({
@@ -161,8 +184,6 @@ function post() {
         list();
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $('#devision #error_message').html('');
-        $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
       }
     });
   };
@@ -189,14 +210,13 @@ function list() {
             for (var i in data) {
               var no = parseInt(i) + 1;
               $("#tbltasksList tbody").append("<tr id=" + data[i].task_id + ">" +
-                "<td>" + no + " </td><td style='text-align:center;'> " + data[i].project.name + "</td>" +
-                "<td style='text-align:center;'> " + data[i].task + "</td>" +
-                "<td  name='" + data[i].task + "' id='" + data[i].task_id + "' style='text-align:left;' class=''><i  class='material-icons btn_edittask' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deletetask' style='padding-right:1rem;'>delete</i></td>" +
+                "<td style='text-align:center;'>" + no + " </td><td> " + data[i].project.name + "</td>" +
+                "<td> " + data[i].task + "</td>" +
+                "<td> " + data[i].plan_effort + ' Hrs' + "</td>" +
+                "<td  name='" + data[i].task + "' id='" + data[i].task_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_edittask' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deletetask' style='padding-right:1rem;'>delete</i></td>" +
                 "</tr>");
             }
           } else {
-            $("#search_devision_list empty").html('')
-            $("#search_devision_list empty").append('<div style="padding:4rem;">Please <a id="create_devision_btn">Click Here </a> to create a new Divisions.</div>');
           }
         }
       });

@@ -80,8 +80,6 @@ function deleteProject(project_id) {
     }).done(function(data, status) {
       list();
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      $('#devision #error_message').html('');
-      $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
     });
   };
 
@@ -99,8 +97,6 @@ function post() {
     }).done(function(data, status) {
       list();
     }).fail(function(jqXHR, textStatus, errorThrown) {
-      $('#devision #error_message').html('');
-      $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
     });
   };
 
@@ -121,8 +117,6 @@ function post() {
         list();
       },
       error: function(jqXHR, textStatus, errorThrown) {
-        $('#devision #error_message').html('');
-        $('#devision #error_message').append('<span>' + jqXHR.responseJSON.message + '</span>');
       }
     });
   };
@@ -146,13 +140,11 @@ function list() {
             for (var i in data) {
               var no = parseInt(i) + 1;
               $("#tblList tbody").append("<tr id=" + data[i].project_id + ">" +
-                "<td>" + no + " </td><td style='text-align:center;'> " + data[i].name + "</td>" +
-                "<td  name='" + data[i].name + "' id='" + data[i].project_id + "' style='text-align:left;' class=''><i  class='material-icons btn_editproject' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteproject' style='padding-right:1rem;'>delete</i></td>" +
+                "<td style='text-align:center;'>" + no + " </td><td> " + data[i].name + "</td>" +
+                "<td  name='" + data[i].name + "' id='" + data[i].project_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_editproject' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteproject' style='padding-right:1rem;'>delete</i></td>" +
                 "</tr>");
             }
           } else {
-            $("#search_devision_list empty").html('')
-            $("#search_devision_list empty").append('<div style="padding:4rem;">Please <a id="create_devision_btn">Click Here </a> to create a new Divisions.</div>');
           }
         }
       });
