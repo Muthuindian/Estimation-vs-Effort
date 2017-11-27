@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  $.ajaxSetup({cache: false});
+
   var base_url = "http://localhost:8888/api/timeSheet/task";
   var base_project_url = "http://localhost:8888/api/timeSheet/project" ;
   var base_status_url = "http://localhost:8888/api/seedData/status";
@@ -213,6 +215,7 @@ function list() {
                 "<td style='text-align:center;'>" + no + " </td><td> " + data[i].project.name + "</td>" +
                 "<td> " + data[i].task + "</td>" +
                 "<td> " + data[i].plan_effort + ' Hrs' + "</td>" +
+                "<td> " + data[i].status.name + "</td>" +
                 "<td  name='" + data[i].task + "' id='" + data[i].task_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_edittask' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deletetask' style='padding-right:1rem;'>delete</i></td>" +
                 "</tr>");
             }

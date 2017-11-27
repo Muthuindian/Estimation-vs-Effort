@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+    $.ajaxSetup({cache: false});
+
     var base_url = "http://localhost:8888/api/timeSheet/task_assignment";
     var base_project_url = "http://localhost:8888/api/timeSheet/project";
     var base_employee_url = "http://localhost:8888/api/seedData/employee";
@@ -37,7 +39,7 @@ $(document).ready(function() {
                 $opt.val(data[i].name).text();
                 $opt.appendTo('#list_projects');
             }
-            if($.cookie("isEdit" , true)) {
+            if($.cookie("isEdit") == "true") {
                 getTasks(project_id);
         }
         calback();
@@ -49,6 +51,7 @@ $(document).ready(function() {
     $('#project_text').change(function(e) {
 
         $('#list_tasks').html('');
+        $('#task_text').val("");
 
     e.stopImmediatePropagation();
     e.preventDefault();
@@ -267,7 +270,7 @@ $(document).ready(function() {
                                 "<td style='text-align:center;'>" + no + " </td><td> " + data[i].employee.name + "</td>" +
                                 "<td> " + data[i].project.name + "</td>" +
                                 "<td> " + data[i].task.task + "</td>" +
-                                "<td  name='" + data[i].employee.name + "' id='" + data[i].task_assignment_id + "' style='text-align:right;margin-right:3rem;' class=''><i  class='material-icons btn_editassignment' style='padding-right:.5rem;'>edit</i>&nbsp;<i href='#modal1' class='material-icons btn_deleteassignment' style='padding-right:1rem;'>delete</i></td>" +
+                                "<td  name='" + data[i].employee.name + "' id='" + data[i].task_assignment_id + "' style='margin-right:3rem;' class='right'><i  class='material-icons btn_editassignment'>edit</i></td>" +
                                 "</tr>");
                         }
                     } else {

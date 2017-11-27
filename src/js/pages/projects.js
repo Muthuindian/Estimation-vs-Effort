@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  $.ajaxSetup({cache: false});
+
 	var base_url = "http://localhost:8888/api/timeSheet/project";
   var project_id;
   var project_name;

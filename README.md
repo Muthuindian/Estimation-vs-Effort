@@ -1,19 +1,10 @@
-## NPM Script Starter for Bootstrap
-
-This projects contains a starter temple  using below technologies
-
-* Bootstrap 3
-* SASS
-* Fontawesome
-
-
 ### Usage
 
 Clone this project to your local
 
-> git clone https://github.com/sathishk/npm-scripts-boostrap-fontawesome.git
+> git clone https://github.com/Muthuindian/Estimation-vs-Effort.git
 
-To download the dependencies, we to to install node modules using
+To download the dependencies, we need to install node modules using
 
 > npm install
 
