@@ -12,6 +12,7 @@
 
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+   <script src='js/config.js'></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body onload="listProjects();">
@@ -42,7 +43,7 @@ function listProjects() {
 
       $.ajax({
         type: "GET",
-        url: "http://localhost:8888/api/timeSheet/project",
+        url: host + "/api/timeSheet/project",
         dataType: "json",
         success: function(response, status) {
           let data = response;

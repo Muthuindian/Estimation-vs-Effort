@@ -1,8 +1,6 @@
 $(document).ready(function() {
 
-  $.ajaxSetup({cache: false});
-
-	var base_url = "http://localhost:8888/api/timeSheet/project";
+	var base_url = host + "/api/timeSheet/project";
   var project_id;
   var project_name;
   var projects;
@@ -41,11 +39,9 @@ $(document).on('submit', '#project', function(e) {
   });
 
 $(document).on('click', '.btn_deleteproject', function(e) {
-
-console.log("Delete");
-  project_id = $(this).closest('tr').attr('id');
   e.preventDefault();
   e.stopImmediatePropagation();
+  project_id = $(this).closest('tr').attr('id');
   deleteProject(project_id);    
   });
 

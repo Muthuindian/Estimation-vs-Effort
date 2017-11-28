@@ -1,12 +1,11 @@
 $(document).ready(function() {
 
-    $.ajaxSetup({cache: false});
 
-    var base_url = "http://localhost:8888/api/timeSheet/task_assignment";
-    var base_project_url = "http://localhost:8888/api/timeSheet/project";
-    var base_employee_url = "http://localhost:8888/api/seedData/employee";
-    var base_task_url = "http://localhost:8888/api/filterData/project_tasks_list";
-    var base_status_url = "http://localhost:8888/api/seedData/status";
+    var base_url = host + "/api/timeSheet/task_assignment";
+    var base_project_url = host + "/api/timeSheet/project";
+    var base_employee_url = host + "/api/seedData/employee";
+    var base_task_url = host + "/api/filterData/project_tasks_list";
+    var base_status_url = host + "/api/seedData/status";
     var assignments;
     var assignment_id;
     var task_id;

@@ -1,10 +1,9 @@
 $(document).ready(function() {
 
-    $.ajaxSetup({cache: false});
 
-    var base_url = "http://localhost:8888/api/timeSheet/time_sheet";
-    var base_employee_url = "http://localhost:8888/api/seedData/employee";
-    var base_task_url = "http://localhost:8888/api/filterData/employee_project_tasks_list";
+    var base_url = host + "/api/timeSheet/time_sheet";
+    var base_employee_url = host + "/api/seedData/employee";
+    var base_task_url = host + "/api/filterData/employee_project_tasks_list";
     var timesheets;
     var timesheet_id;
     var employee_id;

@@ -1,9 +1,7 @@
 $(document).ready(function() {
 
-  $.ajaxSetup({cache: false});
-
-  var base_url = "http://localhost:8888/api/timeSheet/task";
-  var base_project_url = "http://localhost:8888/api/timeSheet/project" ;
+  var base_url = host + "/api/timeSheet/task";
+  var base_project_url = host + "/api/timeSheet/project" ;
  // var base_status_url = "http://localhost:8888/api/seedData/status";
   var tasks;
   var task_id;
