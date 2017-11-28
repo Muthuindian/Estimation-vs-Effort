@@ -6,11 +6,13 @@ $(document).ready(function() {
     var base_project_url = "http://localhost:8888/api/timeSheet/project";
     var base_employee_url = "http://localhost:8888/api/seedData/employee";
     var base_task_url = "http://localhost:8888/api/filterData/project_tasks_list";
+    var base_status_url = "http://localhost:8888/api/seedData/status";
     var assignments;
     var assignment_id;
     var task_id;
     var project_id;
     var employee_id;
+    var status_id;
 
 
     async function render(calback = function() {}) {
@@ -40,6 +42,7 @@ $(document).ready(function() {
                 $opt.appendTo('#list_projects');
             }
             if($.cookie("isEdit") == "true") {
+                getStatus();
                 getTasks(project_id);
         }
         calback();
@@ -47,6 +50,27 @@ $(document).ready(function() {
             console.log(errorThrown);
         });
     }
+
+
+
+    function getStatus() {
+      $.ajax({
+        url: base_status_url,
+        method: "GET",
+        dataType: "json"
+      }).done(function(response) {
+        let data = response;
+        for (var i in data) {
+            if(data[i].status_id !== 1) {
+                var $opt = $('<option id=' + data[i].status_id + '>');
+                $opt.val(data[i].name).text();
+                $opt.appendTo('#list_status');
+            }
+        }
+      }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+      });
+    };
 
     $('#project_text').change(function(e) {
 
@@ -81,14 +105,13 @@ $(document).ready(function() {
         }).done(function(response) {
             let data = response;
             for (var i in data) {
-                if(data[i].status_id == 1) {
+                if(data[i].status_id !== 3) {
                     var $opt = $('<option id=' + data[i].task_id + '>');
                     $opt.val(data[i].task).text();
                     $opt.appendTo('#list_tasks');
                 }
                 
             }
-            calback();
         }).fail(function(jqXHR, textStatus, errorThrown) {
             console.log(errorThrown);
         });
@@ -117,6 +140,7 @@ $(document).ready(function() {
         $('section').html('');
         $('section').load('./pages/addAssignments.html', function() {
             $("#employee").focus();
+            $('#status_text').css('display' , 'none');
             render();
         });
     });
@@ -158,12 +182,15 @@ $(document).ready(function() {
             success: function(response, status) {
                 $('section').html('');
                 $('section').load('./pages/addAssignments.html', function() {
+                    //$('#status').css('display' , 'block');
+                    $('#status_text').css('display' , 'block');
                     let data = response;
                     project_id = data.project_id;
                     let callback = function() {
                         $("#employee").val(data.employee.name).focus();
                         $("#project_text").val(data.project.name).focus();
                         $("#task_text").val(data.task.task).focus();
+                        $("#status").val(data.status.name).focus();
                     };
                     $("label").addClass('active');
                     render(callback);
@@ -199,7 +226,8 @@ $(document).ready(function() {
         var data = {
             employee_id: employee_id,
             project_id: project_id,
-            task_id: task_id
+            task_id: task_id,
+            status_id: 2
         };
 
         $.ajax({
@@ -221,11 +249,13 @@ $(document).ready(function() {
         employee_id = ($("#list_employees option[value='" + $('#employee').val() + "']").attr('id'));
         project_id = ($("#list_projects option[value='" + $('#project_text').val() + "']").attr('id'));
         task_id = ($("#list_tasks option[value='" + $('#task_text').val() + "']").attr('id'));
+        status_id = ($("#list_status option[value='" + $('#status').val() + "']").attr('id'));
         var data = {
 
             employee_id: employee_id,
             project_id: project_id,
-            task_id: task_id
+            task_id: task_id,
+            status_id: status_id
         };
 
         $.ajax({
@@ -270,6 +300,7 @@ $(document).ready(function() {
                                 "<td style='text-align:center;'>" + no + " </td><td> " + data[i].employee.name + "</td>" +
                                 "<td> " + data[i].project.name + "</td>" +
                                 "<td> " + data[i].task.task + "</td>" +
+                                "<td> " + data[i].status.name + "</td>" +
                                 "<td  name='" + data[i].employee.name + "' id='" + data[i].task_assignment_id + "' style='margin-right:3rem;' class='right'><i  class='material-icons btn_editassignment'>edit</i></td>" +
                                 "</tr>");
                         }

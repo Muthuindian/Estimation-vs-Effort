@@ -123,7 +123,7 @@ $(document).ready(function() {
             let data = response;
             console.log(data);
             for (var i in data) {
-                if (data[i].status_id == 1) {
+                if (data[i].status_id !== 3) {
                     var $opt = $('<option id=' + data[i].task_id + '>');
                     $opt.val(data[i].task).text();
                     $opt.appendTo('#list_tasks');

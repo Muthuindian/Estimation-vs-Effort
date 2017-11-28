@@ -1,4 +1,4 @@
-<form id="assignment">
+<form id="assignment" name="assignment" novalidate>
   <div id="error_message" class="center">
   </div>
   <fieldset style="height: 33.3rem;border-style: none">
@@ -7,6 +7,8 @@
   <datalist id="list_projects">
     </datalist>
     <datalist id="list_tasks">
+    </datalist>
+    <datalist id="list_status">
     </datalist>
     <table>
       <thead style="border-width: none;background-color: #ee6e73;">
@@ -30,6 +32,10 @@
         <div class="input-field col s12">
           <input id="task_text" type="text" name="task_text" style="margin-bottom: 0rem;" class="validate" list="list_tasks" autofocus required autocomplete="off">
           <label for="task_text">Task Name</label>
+        </div>
+        <div class="input-field col s12" id="status_text" style="display: none;">
+          <input id="status" type="text" style="margin-bottom: 0rem;" name="status" class="validate" list="list_status" autofocus required autocomplete="off">
+          <label for="status" id="status_label">Status</label>
         </div>
       </div>
     </div>
